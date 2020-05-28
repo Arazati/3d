@@ -275,17 +275,17 @@ var Main = function() {
 $hxClasses["Main"] = Main;
 Main.__name__ = true;
 Main.main = function() {
+	var canvas = window.document.getElementById("khanvas");
+	canvas.style.display = "block";
+	var resize = function() {
+		canvas.width = 1280;
+		canvas.height = 960;
+		canvas.style.width = window.document.documentElement.clientWidth + "px";
+		canvas.style.height = window.document.documentElement.clientHeight + "px";
+	};
+	window.onresize = resize;
+	resize();
 	kha_System.start(new kha_SystemOptions(" ",Main.baseWidth * Main.pixelScale,Main.baseHeight * Main.pixelScale,null,null),function(_) {
-		var canvas = window.document.getElementById("khanvas");
-		canvas.style.display = "block";
-		var resize = function() {
-			canvas.width = 1280;
-			canvas.height = 960;
-			canvas.style.width = window.document.documentElement.clientWidth + "px";
-			canvas.style.height = window.document.documentElement.clientHeight + "px";
-		};
-		window.onresize = resize;
-		resize();
 		kha_Assets.loadEverything(function() {
 			var game = new Main();
 			kha_Scheduler.addTimeTask(function() {
