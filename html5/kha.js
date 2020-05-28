@@ -276,6 +276,16 @@ $hxClasses["Main"] = Main;
 Main.__name__ = true;
 Main.main = function() {
 	kha_System.start(new kha_SystemOptions(" ",Main.baseWidth * Main.pixelScale,Main.baseHeight * Main.pixelScale,null,null),function(_) {
+		var canvas = window.document.getElementById("khanvas");
+		canvas.style.display = "block";
+		var resize = function() {
+			canvas.width = 1280;
+			canvas.height = 960;
+			canvas.style.width = window.document.documentElement.clientWidth + "px";
+			canvas.style.height = window.document.documentElement.clientHeight + "px";
+		};
+		window.onresize = resize;
+		resize();
 		kha_Assets.loadEverything(function() {
 			var game = new Main();
 			kha_Scheduler.addTimeTask(function() {
@@ -6413,7 +6423,7 @@ kha_Window.prototype = {
 		}
 	}
 	,set_width: function(value) {
-		return 1280;
+		return 800;
 	}
 	,get_height: function() {
 		if(this.canvas.clientHeight == 0) {
@@ -6423,7 +6433,7 @@ kha_Window.prototype = {
 		}
 	}
 	,set_height: function(value) {
-		return 960;
+		return 600;
 	}
 	,get_mode: function() {
 		if(this.isFullscreen()) {
@@ -6508,10 +6518,10 @@ var kha_WindowOptions = function(title,x,y,width,height,display,visible,windowFe
 		display = -1;
 	}
 	if(height == null) {
-		height = 960;
+		height = 600;
 	}
 	if(width == null) {
-		width = 1280;
+		width = 800;
 	}
 	if(y == null) {
 		y = -1;
@@ -6523,8 +6533,8 @@ var kha_WindowOptions = function(title,x,y,width,height,display,visible,windowFe
 	this.windowFeatures = 1 | 4 | 2;
 	this.visible = true;
 	this.display = -1;
-	this.height = 960;
-	this.width = 1280;
+	this.height = 600;
+	this.width = 800;
 	this.y = -1;
 	this.x = -1;
 	this.title = null;
