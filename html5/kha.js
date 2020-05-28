@@ -251,8 +251,7 @@ var Main = function() {
 	this.speed = 1.0;
 	this.camera = Vec3D.get_Zero();
 	this.totalElapsedTime = 0.0;
-	var this1 = new Array(Main.baseWidth * Main.pixelScale * Main.baseHeight * Main.pixelScale);
-	this.depth = this1;
+	this.depth = new Array(Main.baseWidth * Main.pixelScale * Main.baseHeight * Main.pixelScale);
 	this.matProj = new Matrix4x4();
 	this.objects = 1;
 	this.useLighting = true;
@@ -2341,7 +2340,7 @@ kha__$Assets_ImageList.prototype = {
 };
 var kha__$Assets_SoundList = function() {
 	this.names = ["tone"];
-	this.toneDescription = { name : "tone", file_sizes : [45975], files : ["tone.ogg"], type : "sound"};
+	this.toneDescription = { name : "tone", file_sizes : [45975,144612], files : ["tone.ogg","tone.mp3"], type : "sound"};
 	this.toneName = "tone";
 	this.tone = null;
 };
@@ -3655,6 +3654,15 @@ kha_LoaderImpl.loadImageFromDescription = function(desc,done,failed) {
 kha_LoaderImpl.getSoundFormats = function() {
 	var element = window.document.createElement("audio");
 	var formats = [];
+	if(element.canPlayType("audio/mp4") != "") {
+		formats.push("mp4");
+	}
+	if(element.canPlayType("audio/mp3") != "") {
+		formats.push("mp3");
+	}
+	if(element.canPlayType("audio/wav") != "") {
+		formats.push("wav");
+	}
 	if(kha_SystemImpl._hasWebAudio || element.canPlayType("audio/ogg") != "") {
 		formats.push("ogg");
 	}
@@ -3662,61 +3670,98 @@ kha_LoaderImpl.getSoundFormats = function() {
 };
 kha_LoaderImpl.loadSoundFromDescription = function(desc,done,failed) {
 	if(kha_SystemImpl._hasWebAudio) {
-		var _g = 0;
-		var _g1 = desc.files.length;
-		while(_g < _g1) {
-			var i = _g++;
-			var file = desc.files[i];
-			if(StringTools.endsWith(file,".ogg")) {
-				new kha_js_WebAudioSound(file,done,failed);
-				return;
-			}
-		}
-	} else if(kha_SystemImpl.mobile) {
 		var element = window.document.createElement("audio");
 		if(element.canPlayType("audio/mp4") != "") {
-			var _g2 = 0;
-			var _g11 = desc.files.length;
-			while(_g2 < _g11) {
-				var i1 = _g2++;
-				var file1 = desc.files[i1];
-				if(StringTools.endsWith(file1,".mp4")) {
-					new kha_js_MobileWebAudioSound(file1,done,failed);
+			var _g = 0;
+			var _g1 = desc.files.length;
+			while(_g < _g1) {
+				var i = _g++;
+				var file = desc.files[i];
+				if(StringTools.endsWith(file,".mp4")) {
+					new kha_js_WebAudioSound(file,done,failed);
 					return;
 				}
 			}
 		}
 		if(element.canPlayType("audio/mp3") != "") {
-			var _g3 = 0;
-			var _g12 = desc.files.length;
-			while(_g3 < _g12) {
-				var i2 = _g3++;
-				var file2 = desc.files[i2];
-				if(StringTools.endsWith(file2,".mp3")) {
-					new kha_js_MobileWebAudioSound(file2,done,failed);
+			var _g2 = 0;
+			var _g11 = desc.files.length;
+			while(_g2 < _g11) {
+				var i1 = _g2++;
+				var file1 = desc.files[i1];
+				if(StringTools.endsWith(file1,".mp3")) {
+					new kha_js_WebAudioSound(file1,done,failed);
 					return;
 				}
 			}
 		}
 		if(element.canPlayType("audio/wav") != "") {
-			var _g4 = 0;
-			var _g13 = desc.files.length;
-			while(_g4 < _g13) {
-				var i3 = _g4++;
-				var file3 = desc.files[i3];
-				if(StringTools.endsWith(file3,".wav")) {
-					new kha_js_MobileWebAudioSound(file3,done,failed);
+			var _g3 = 0;
+			var _g12 = desc.files.length;
+			while(_g3 < _g12) {
+				var i2 = _g3++;
+				var file2 = desc.files[i2];
+				if(StringTools.endsWith(file2,".wav")) {
+					new kha_js_WebAudioSound(file2,done,failed);
 					return;
 				}
 			}
 		}
-		var _g5 = 0;
-		var _g14 = desc.files.length;
-		while(_g5 < _g14) {
-			var i4 = _g5++;
-			var file4 = desc.files[i4];
-			if(StringTools.endsWith(file4,".ogg")) {
-				new kha_js_MobileWebAudioSound(file4,done,failed);
+		var _g4 = 0;
+		var _g13 = desc.files.length;
+		while(_g4 < _g13) {
+			var i3 = _g4++;
+			var file3 = desc.files[i3];
+			if(StringTools.endsWith(file3,".ogg")) {
+				new kha_js_WebAudioSound(file3,done,failed);
+				return;
+			}
+		}
+	} else if(kha_SystemImpl.mobile) {
+		var element1 = window.document.createElement("audio");
+		if(element1.canPlayType("audio/mp4") != "") {
+			var _g5 = 0;
+			var _g14 = desc.files.length;
+			while(_g5 < _g14) {
+				var i4 = _g5++;
+				var file4 = desc.files[i4];
+				if(StringTools.endsWith(file4,".mp4")) {
+					new kha_js_MobileWebAudioSound(file4,done,failed);
+					return;
+				}
+			}
+		}
+		if(element1.canPlayType("audio/mp3") != "") {
+			var _g6 = 0;
+			var _g15 = desc.files.length;
+			while(_g6 < _g15) {
+				var i5 = _g6++;
+				var file5 = desc.files[i5];
+				if(StringTools.endsWith(file5,".mp3")) {
+					new kha_js_MobileWebAudioSound(file5,done,failed);
+					return;
+				}
+			}
+		}
+		if(element1.canPlayType("audio/wav") != "") {
+			var _g7 = 0;
+			var _g16 = desc.files.length;
+			while(_g7 < _g16) {
+				var i6 = _g7++;
+				var file6 = desc.files[i6];
+				if(StringTools.endsWith(file6,".wav")) {
+					new kha_js_MobileWebAudioSound(file6,done,failed);
+					return;
+				}
+			}
+		}
+		var _g8 = 0;
+		var _g17 = desc.files.length;
+		while(_g8 < _g17) {
+			var i7 = _g8++;
+			var file7 = desc.files[i7];
+			if(StringTools.endsWith(file7,".ogg")) {
+				new kha_js_MobileWebAudioSound(file7,done,failed);
 				return;
 			}
 		}
@@ -3725,7 +3770,7 @@ kha_LoaderImpl.loadSoundFromDescription = function(desc,done,failed) {
 	}
 };
 kha_LoaderImpl.getVideoFormats = function() {
-	return ["webm"];
+	return ["mp4","webm"];
 };
 kha_LoaderImpl.loadVideoFromDescription = function(desc,done,failed) {
 	kha_js_Video.fromFile(desc.files,done);
@@ -3765,42 +3810,16 @@ kha_LoaderImpl.loadRemote = function(desc,done,failed) {
 	request.send(null);
 };
 kha_LoaderImpl.loadBlobFromDescription = function(desc,done,failed) {
-	var isUrl = desc.files[0].startsWith("http");
-	if(isUrl) {
-		kha_LoaderImpl.loadRemote(desc,done,failed);
-	} else {
-		var fs = require('electron').remote.require('fs');
-		var path = require('electron').remote.require('path');
-		var app = require('electron').remote.require('electron').app;
-		var url;
-		if(path.isAbsolute(desc.files[0])) {
-			url = desc.files[0];
-		} else {
-			var url1 = app.getAppPath();
-			url = path.join(url1,desc.files[0]);
-		}
-		fs.readFile(url,function(err,data) {
-			if(err != null) {
-				failed({ url : url, error : err});
-				return;
-			}
-			var byteArray = new Uint8Array(data);
-			var bytes = new haxe_io_Bytes(new ArrayBuffer(byteArray.byteLength));
-			var _g = 0;
-			var _g1 = byteArray.byteLength;
-			while(_g < _g1) {
-				var i = _g++;
-				bytes.b[i] = byteArray[i];
-			}
-			done(new kha_internal_BytesBlob(bytes));
-		});
-	}
+	kha_LoaderImpl.loadRemote(desc,done,failed);
 };
 kha_LoaderImpl.loadFontFromDescription = function(desc,done,failed) {
 	kha_LoaderImpl.loadBlobFromDescription(desc,function(blob) {
 		done(new kha_Kravur(blob));
 	},failed);
 };
+var kha_Macros = function() { };
+$hxClasses["kha.Macros"] = kha_Macros;
+kha_Macros.__name__ = true;
 var kha_TimeTask = function() {
 };
 $hxClasses["kha.TimeTask"] = kha_TimeTask;
@@ -4331,63 +4350,87 @@ kha_Shaders.init = function() {
 	var data1 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 1);
 	var bytes1 = haxe_Unserializer.run(data1);
 	blobs.push(kha_internal_BytesBlob.fromBytes(bytes1));
-	kha_Shaders.painter_colored_frag = new kha_graphics4_FragmentShader(blobs,["painter-colored.frag.essl","painter-colored-webgl2.frag.essl"]);
-	var blobs1 = [];
-	var data2 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 0);
+	var data2 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 2);
 	var bytes2 = haxe_Unserializer.run(data2);
-	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes2));
-	var data3 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 1);
+	blobs.push(kha_internal_BytesBlob.fromBytes(bytes2));
+	kha_Shaders.painter_colored_frag = new kha_graphics4_FragmentShader(blobs,["painter-colored.frag.essl","painter-colored-webgl2.frag.essl","painter-colored-relaxed.frag.essl"]);
+	var blobs1 = [];
+	var data3 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 0);
 	var bytes3 = haxe_Unserializer.run(data3);
 	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes3));
-	kha_Shaders.painter_colored_vert = new kha_graphics4_VertexShader(blobs1,["painter-colored.vert.essl","painter-colored-webgl2.vert.essl"]);
-	var blobs2 = [];
-	var data4 = Reflect.field(kha_Shaders,"painter_image_fragData" + 0);
+	var data4 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 1);
 	var bytes4 = haxe_Unserializer.run(data4);
-	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes4));
-	var data5 = Reflect.field(kha_Shaders,"painter_image_fragData" + 1);
+	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes4));
+	var data5 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 2);
 	var bytes5 = haxe_Unserializer.run(data5);
-	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes5));
-	kha_Shaders.painter_image_frag = new kha_graphics4_FragmentShader(blobs2,["painter-image.frag.essl","painter-image-webgl2.frag.essl"]);
-	var blobs3 = [];
-	var data6 = Reflect.field(kha_Shaders,"painter_image_vertData" + 0);
+	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes5));
+	kha_Shaders.painter_colored_vert = new kha_graphics4_VertexShader(blobs1,["painter-colored.vert.essl","painter-colored-webgl2.vert.essl","painter-colored-relaxed.vert.essl"]);
+	var blobs2 = [];
+	var data6 = Reflect.field(kha_Shaders,"painter_image_fragData" + 0);
 	var bytes6 = haxe_Unserializer.run(data6);
-	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes6));
-	var data7 = Reflect.field(kha_Shaders,"painter_image_vertData" + 1);
+	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes6));
+	var data7 = Reflect.field(kha_Shaders,"painter_image_fragData" + 1);
 	var bytes7 = haxe_Unserializer.run(data7);
-	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes7));
-	kha_Shaders.painter_image_vert = new kha_graphics4_VertexShader(blobs3,["painter-image.vert.essl","painter-image-webgl2.vert.essl"]);
-	var blobs4 = [];
-	var data8 = Reflect.field(kha_Shaders,"painter_text_fragData" + 0);
+	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes7));
+	var data8 = Reflect.field(kha_Shaders,"painter_image_fragData" + 2);
 	var bytes8 = haxe_Unserializer.run(data8);
-	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes8));
-	var data9 = Reflect.field(kha_Shaders,"painter_text_fragData" + 1);
+	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes8));
+	kha_Shaders.painter_image_frag = new kha_graphics4_FragmentShader(blobs2,["painter-image.frag.essl","painter-image-webgl2.frag.essl","painter-image-relaxed.frag.essl"]);
+	var blobs3 = [];
+	var data9 = Reflect.field(kha_Shaders,"painter_image_vertData" + 0);
 	var bytes9 = haxe_Unserializer.run(data9);
-	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes9));
-	kha_Shaders.painter_text_frag = new kha_graphics4_FragmentShader(blobs4,["painter-text.frag.essl","painter-text-webgl2.frag.essl"]);
-	var blobs5 = [];
-	var data10 = Reflect.field(kha_Shaders,"painter_text_vertData" + 0);
+	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes9));
+	var data10 = Reflect.field(kha_Shaders,"painter_image_vertData" + 1);
 	var bytes10 = haxe_Unserializer.run(data10);
-	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes10));
-	var data11 = Reflect.field(kha_Shaders,"painter_text_vertData" + 1);
+	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes10));
+	var data11 = Reflect.field(kha_Shaders,"painter_image_vertData" + 2);
 	var bytes11 = haxe_Unserializer.run(data11);
-	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes11));
-	kha_Shaders.painter_text_vert = new kha_graphics4_VertexShader(blobs5,["painter-text.vert.essl","painter-text-webgl2.vert.essl"]);
-	var blobs6 = [];
-	var data12 = Reflect.field(kha_Shaders,"painter_video_fragData" + 0);
+	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes11));
+	kha_Shaders.painter_image_vert = new kha_graphics4_VertexShader(blobs3,["painter-image.vert.essl","painter-image-webgl2.vert.essl","painter-image-relaxed.vert.essl"]);
+	var blobs4 = [];
+	var data12 = Reflect.field(kha_Shaders,"painter_text_fragData" + 0);
 	var bytes12 = haxe_Unserializer.run(data12);
-	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes12));
-	var data13 = Reflect.field(kha_Shaders,"painter_video_fragData" + 1);
+	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes12));
+	var data13 = Reflect.field(kha_Shaders,"painter_text_fragData" + 1);
 	var bytes13 = haxe_Unserializer.run(data13);
-	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes13));
-	kha_Shaders.painter_video_frag = new kha_graphics4_FragmentShader(blobs6,["painter-video.frag.essl","painter-video-webgl2.frag.essl"]);
-	var blobs7 = [];
-	var data14 = Reflect.field(kha_Shaders,"painter_video_vertData" + 0);
+	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes13));
+	var data14 = Reflect.field(kha_Shaders,"painter_text_fragData" + 2);
 	var bytes14 = haxe_Unserializer.run(data14);
-	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes14));
-	var data15 = Reflect.field(kha_Shaders,"painter_video_vertData" + 1);
+	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes14));
+	kha_Shaders.painter_text_frag = new kha_graphics4_FragmentShader(blobs4,["painter-text.frag.essl","painter-text-webgl2.frag.essl","painter-text-relaxed.frag.essl"]);
+	var blobs5 = [];
+	var data15 = Reflect.field(kha_Shaders,"painter_text_vertData" + 0);
 	var bytes15 = haxe_Unserializer.run(data15);
-	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes15));
-	kha_Shaders.painter_video_vert = new kha_graphics4_VertexShader(blobs7,["painter-video.vert.essl","painter-video-webgl2.vert.essl"]);
+	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes15));
+	var data16 = Reflect.field(kha_Shaders,"painter_text_vertData" + 1);
+	var bytes16 = haxe_Unserializer.run(data16);
+	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes16));
+	var data17 = Reflect.field(kha_Shaders,"painter_text_vertData" + 2);
+	var bytes17 = haxe_Unserializer.run(data17);
+	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes17));
+	kha_Shaders.painter_text_vert = new kha_graphics4_VertexShader(blobs5,["painter-text.vert.essl","painter-text-webgl2.vert.essl","painter-text-relaxed.vert.essl"]);
+	var blobs6 = [];
+	var data18 = Reflect.field(kha_Shaders,"painter_video_fragData" + 0);
+	var bytes18 = haxe_Unserializer.run(data18);
+	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes18));
+	var data19 = Reflect.field(kha_Shaders,"painter_video_fragData" + 1);
+	var bytes19 = haxe_Unserializer.run(data19);
+	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes19));
+	var data20 = Reflect.field(kha_Shaders,"painter_video_fragData" + 2);
+	var bytes20 = haxe_Unserializer.run(data20);
+	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes20));
+	kha_Shaders.painter_video_frag = new kha_graphics4_FragmentShader(blobs6,["painter-video.frag.essl","painter-video-webgl2.frag.essl","painter-video-relaxed.frag.essl"]);
+	var blobs7 = [];
+	var data21 = Reflect.field(kha_Shaders,"painter_video_vertData" + 0);
+	var bytes21 = haxe_Unserializer.run(data21);
+	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes21));
+	var data22 = Reflect.field(kha_Shaders,"painter_video_vertData" + 1);
+	var bytes22 = haxe_Unserializer.run(data22);
+	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes22));
+	var data23 = Reflect.field(kha_Shaders,"painter_video_vertData" + 2);
+	var bytes23 = haxe_Unserializer.run(data23);
+	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes23));
+	kha_Shaders.painter_video_vert = new kha_graphics4_VertexShader(blobs7,["painter-video.vert.essl","painter-video-webgl2.vert.essl","painter-video-relaxed.vert.essl"]);
 };
 var kha_Sound = function() {
 	this.sampleRate = 0;
@@ -4738,16 +4781,17 @@ kha_SystemImpl.errorHandler = function(message,source,lineno,colno,error) {
 };
 kha_SystemImpl.init = function(options,callback) {
 	kha_SystemImpl.options = options;
-	window.onerror = kha_SystemImpl.errorHandler;
-	var electron = require('electron');
-	if(electron.webFrame.setZoomLevelLimits != null) {
-		electron.webFrame.setZoomLevelLimits(1,1);
+	kha_SystemImpl.mobile = kha_SystemImpl.isMobile();
+	kha_SystemImpl.ios = kha_SystemImpl.isIOS();
+	kha_SystemImpl.chrome = kha_SystemImpl.isChrome();
+	kha_SystemImpl.firefox = kha_SystemImpl.isFirefox();
+	kha_SystemImpl.ie = kha_SystemImpl.isIE();
+	if(kha_SystemImpl.mobile || kha_SystemImpl.chrome) {
+		kha_SystemImpl.mobileAudioPlaying = false;
+	} else {
+		kha_SystemImpl.mobileAudioPlaying = true;
 	}
-	var wndOpts = { type : "showWindow", title : options.title, x : options.window.x, y : options.window.y, width : options.width, height : options.height};
-	electron.ipcRenderer.send("asynchronous-message",wndOpts);
-	window.setTimeout(function() {
-		kha_SystemImpl.initSecondStep(callback);
-	},1000);
+	kha_SystemImpl.initSecondStep(callback);
 };
 kha_SystemImpl.initSecondStep = function(callback) {
 	kha_SystemImpl.init2(kha_SystemImpl.options.window.width,kha_SystemImpl.options.window.height);
@@ -5088,21 +5132,6 @@ kha_SystemImpl.loadFinished = function(defaultWidth,defaultHeight) {
 	canvas.addEventListener("touchend",kha_SystemImpl.touchUp,false);
 	canvas.addEventListener("touchmove",kha_SystemImpl.touchMove,false);
 	canvas.addEventListener("touchcancel",kha_SystemImpl.touchCancel,false);
-	window.document.addEventListener("dragover",function(event) {
-		event.preventDefault();
-	});
-	window.document.addEventListener("drop",function(event1) {
-		event1.preventDefault();
-		if(event1.dataTransfer != null && event1.dataTransfer.files != null) {
-			var _g2 = 0;
-			var _g11 = event1.dataTransfer.files;
-			while(_g2 < _g11.length) {
-				var file = _g11[_g2];
-				++_g2;
-				kha_System.dropFiles(file.path);
-			}
-		}
-	});
 	window.addEventListener("unload",function() {
 		kha_System.shutdown();
 	});
@@ -6728,7 +6757,7 @@ kha_audio2_Audio.stream = function(sound,loop) {
 		loop = false;
 	}
 	var element = window.document.createElement("audio");
-	var blob = new Blob([sound.compressedData.b.bufferValue],{ type : "audio/ogg"});
+	var blob = new Blob([sound.compressedData.b.bufferValue],{ type : "audio/mp4"});
 	element.src = URL.createObjectURL(blob);
 	element.loop = loop;
 	var channel = new kha_js_AEAudioChannel(element,loop);
@@ -8668,9 +8697,6 @@ kha_audio2_ogg_vorbis_VorbisDecodeState.prototype = {
 		if(this.nextSeg >= this.segments.length) {
 			this.nextSeg = -1;
 		}
-		if(this.bytesInSeg != 0) {
-			throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisDecodeState.hx", lineNumber : 184, className : "kha.audio2.ogg.vorbis.VorbisDecodeState", methodName : "next"}));
-		}
 		this.bytesInSeg = len;
 		return len;
 	}
@@ -9272,9 +9298,6 @@ kha_audio2_ogg_vorbis_VorbisDecodeState.prototype = {
 			vec[i] = this.input.readByte();
 		}
 		var pageHeader = vec;
-		if(!(pageHeader[0] == 79 && pageHeader[1] == 103 && pageHeader[2] == 103 && pageHeader[3] == 83)) {
-			throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisDecodeState.hx", lineNumber : 661, className : "kha.audio2.ogg.vorbis.VorbisDecodeState", methodName : "analyzePage"}));
-		}
 		var n = pageHeader[26];
 		this.inputPosition += n;
 		var this3 = new Array(n);
@@ -9376,9 +9399,6 @@ kha_audio2_ogg_vorbis_VorbisDecodeState.prototype = {
 	}
 	,decodeScalarRaw: function(c) {
 		this.prepHuffman();
-		if(!(c.sortedCodewords != null || c.codewords != null)) {
-			throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisDecodeState.hx", lineNumber : 788, className : "kha.audio2.ogg.vorbis.VorbisDecodeState", methodName : "decodeScalarRaw"}));
-		}
 		var codewordLengths = c.codewordLengths;
 		var codewords = c.codewords;
 		var sortedCodewords = c.sortedCodewords;
@@ -9411,9 +9431,6 @@ kha_audio2_ogg_vorbis_VorbisDecodeState.prototype = {
 			}
 			this.validBits = 0;
 			return -1;
-		}
-		if(!(!c.sparse)) {
-			throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisDecodeState.hx", lineNumber : 830, className : "kha.audio2.ogg.vorbis.VorbisDecodeState", methodName : "decodeScalarRaw"}));
 		}
 		var _g = 0;
 		var _g1 = c.entries;
@@ -9826,7 +9843,7 @@ kha_audio2_ogg_vorbis_VorbisDecoder.prototype = {
 		} else if(len == this.header.blocksize1) {
 			return this.window[1];
 		} else {
-			throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisDecoder.hx", lineNumber : 466, className : "kha.audio2.ogg.vorbis.VorbisDecoder", methodName : "getWindow"}));
+			return null;
 		}
 	}
 	,initBlocksize: function(bs,n) {
@@ -10853,9 +10870,6 @@ var kha_audio2_ogg_vorbis_VorbisTools = function() { };
 $hxClasses["kha.audio2.ogg.vorbis.VorbisTools"] = kha_audio2_ogg_vorbis_VorbisTools;
 kha_audio2_ogg_vorbis_VorbisTools.__name__ = true;
 kha_audio2_ogg_vorbis_VorbisTools.assert = function(b,p) {
-	if(!b) {
-		throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",p));
-	}
 };
 kha_audio2_ogg_vorbis_VorbisTools.neighbors = function(x,n) {
 	var low = -1;
@@ -10913,12 +10927,6 @@ kha_audio2_ogg_vorbis_VorbisTools.lookup1Values = function(entries,dim) {
 	var r = Math.exp(Math.log(entries) / dim) | 0;
 	if((Math.pow(r + 1,dim) | 0) <= entries) {
 		++r;
-	}
-	if(!(Math.pow(r + 1,dim) > entries)) {
-		throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisTools.hx", lineNumber : 155, className : "kha.audio2.ogg.vorbis.VorbisTools", methodName : "lookup1Values"}));
-	}
-	if((Math.pow(r,dim) | 0) > entries) {
-		throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/VorbisTools.hx", lineNumber : 156, className : "kha.audio2.ogg.vorbis.VorbisTools", methodName : "lookup1Values"}));
 	}
 	return r;
 };
@@ -11251,9 +11259,6 @@ kha_audio2_ogg_vorbis_data_Codebook.prototype = {
 	}
 	,includeInSort: function(len) {
 		if(this.sparse) {
-			if(len == 255) {
-				throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/data/Codebook.hx", lineNumber : 201, className : "kha.audio2.ogg.vorbis.data.Codebook", methodName : "includeInSort"}));
-			}
 			return true;
 		} else if(len == 255) {
 			return false;
@@ -11306,9 +11311,6 @@ kha_audio2_ogg_vorbis_data_Codebook.prototype = {
 			++k;
 		}
 		if(k == n) {
-			if(this.sortedEntries != 0) {
-				throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/data/Codebook.hx", lineNumber : 228, className : "kha.audio2.ogg.vorbis.data.Codebook", methodName : "computeCodewords"}));
-			}
 			return true;
 		}
 		var m = 0;
@@ -11351,9 +11353,6 @@ kha_audio2_ogg_vorbis_data_Codebook.prototype = {
 			if(z != len[i]) {
 				var y = len[i];
 				while(y > z) {
-					if(available[y] != 0) {
-						throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/data/Codebook.hx", lineNumber : 272, className : "kha.audio2.ogg.vorbis.data.Codebook", methodName : "computeCodewords"}));
-					}
 					available[y] = res + (1 << 32 - y);
 					--y;
 				}
@@ -11369,16 +11368,7 @@ kha_audio2_ogg_vorbis_data_Codebook.prototype = {
 			while(_g < _g1) {
 				var i = _g++;
 				var len = lengths[i];
-				var tmp;
-				if(this.sparse) {
-					if(len == 255) {
-						throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/data/Codebook.hx", lineNumber : 201, className : "kha.audio2.ogg.vorbis.data.Codebook", methodName : "includeInSort"}));
-					}
-					tmp = true;
-				} else {
-					tmp = len == 255 ? false : len > 10;
-				}
-				if(tmp) {
+				if(this.sparse ? true : len == 255 ? false : len > 10) {
 					var n = this.codewords[i];
 					n = (n & -1431655766) >>> 1 | (n & 1431655765) << 1;
 					n = (n & -858993460) >>> 2 | (n & 858993459) << 2;
@@ -11386,9 +11376,6 @@ kha_audio2_ogg_vorbis_data_Codebook.prototype = {
 					n = (n & -16711936) >>> 8 | (n & 16711935) << 8;
 					this.sortedCodewords[k++] = n >>> 16 | n << 16;
 				}
-			}
-			if(k != this.sortedEntries) {
-				throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/data/Codebook.hx", lineNumber : 296, className : "kha.audio2.ogg.vorbis.data.Codebook", methodName : "computeSortedHuffman"}));
 			}
 		} else {
 			var _g2 = 0;
@@ -11411,16 +11398,7 @@ kha_audio2_ogg_vorbis_data_Codebook.prototype = {
 		while(_g3 < _g12) {
 			var i2 = _g3++;
 			var huffLen = this.sparse ? lengths[values[i2]] : lengths[i2];
-			var tmp1;
-			if(this.sparse) {
-				if(huffLen == 255) {
-					throw new js__$Boot_HaxeError(new kha_audio2_ogg_vorbis_data_ReaderError(kha_audio2_ogg_vorbis_data_ReaderErrorType.OTHER,"",{ fileName : "kha/audio2/ogg/vorbis/data/Codebook.hx", lineNumber : 201, className : "kha.audio2.ogg.vorbis.data.Codebook", methodName : "includeInSort"}));
-				}
-				tmp1 = true;
-			} else {
-				tmp1 = huffLen == 255 ? false : huffLen > 10;
-			}
-			if(tmp1) {
+			if(this.sparse ? true : huffLen == 255 ? false : huffLen > 10) {
 				var n2 = this.codewords[i2];
 				n2 = (n2 & -1431655766) >>> 1 | (n2 & 1431655765) << 1;
 				n2 = (n2 & -858993460) >>> 2 | (n2 & 858993459) << 2;
@@ -21317,6 +21295,9 @@ kha_js_Video.fromFile = function(filenames,done) {
 		if(video.element.canPlayType("video/webm") != "" && StringTools.endsWith(filename,".webm")) {
 			video.filenames.push(filename);
 		}
+		if(video.element.canPlayType("video/mp4") != "" && StringTools.endsWith(filename,".mp4")) {
+			video.filenames.push(filename);
+		}
 	}
 	video.element.addEventListener("error",$bind(video,video.errorListener),false);
 	video.element.addEventListener("canplaythrough",$bind(video,video.canPlayThroughListener),false);
@@ -21480,10 +21461,8 @@ kha_js_graphics4_ConstantLocation.prototype = {
 	,__class__: kha_js_graphics4_ConstantLocation
 };
 var kha_js_graphics4_Graphics = function(renderTarget) {
-	var this1 = new Float32Array(9);
-	this.matrix3Cache = this1;
-	var this11 = new Float32Array(16);
-	this.matrixCache = this11;
+	this.matrix3Cache = new Float32Array(9);
+	this.matrixCache = new Float32Array(16);
 	this.useVertexAttributes = 0;
 	this.isDepthAttachment = false;
 	this.isCubeMap = false;
@@ -21633,31 +21612,6 @@ kha_js_graphics4_Graphics.prototype = {
 			kha_SystemImpl.gl.bindFramebuffer(kha_SystemImpl.gl.READ_FRAMEBUFFER,this.renderTargetFrameBuffer);
 			kha_SystemImpl.gl.bindFramebuffer(kha_SystemImpl.gl.DRAW_FRAMEBUFFER,this.renderTargetMSAA);
 			kha_SystemImpl.gl.blitFramebuffer(0,0,this.renderTarget.get_width(),this.renderTarget.get_height(),0,0,this.renderTarget.get_width(),this.renderTarget.get_height(),16384,9728);
-		}
-		var error = kha_SystemImpl.gl.getError();
-		switch(error) {
-		case 0:
-			break;
-		case 1280:
-			haxe_Log.trace("WebGL error: Invalid enum",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 142, className : "kha.js.graphics4.Graphics", methodName : "end"});
-			break;
-		case 1281:
-			haxe_Log.trace("WebGL error: Invalid value",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 144, className : "kha.js.graphics4.Graphics", methodName : "end"});
-			break;
-		case 1282:
-			haxe_Log.trace("WebGL error: Invalid operation",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 146, className : "kha.js.graphics4.Graphics", methodName : "end"});
-			break;
-		case 1285:
-			haxe_Log.trace("WebGL error: Out of memory",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 150, className : "kha.js.graphics4.Graphics", methodName : "end"});
-			break;
-		case 1286:
-			haxe_Log.trace("WebGL error: Invalid framebuffer operation",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 148, className : "kha.js.graphics4.Graphics", methodName : "end"});
-			break;
-		case 37442:
-			haxe_Log.trace("WebGL error: Context lost",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 152, className : "kha.js.graphics4.Graphics", methodName : "end"});
-			break;
-		default:
-			haxe_Log.trace("Unknown WebGL error",{ fileName : "kha/js/graphics4/Graphics.hx", lineNumber : 154, className : "kha.js.graphics4.Graphics", methodName : "end"});
 		}
 	}
 	,flush: function() {
@@ -23901,20 +23855,28 @@ kha_Scheduler.maxframetime = 0.5;
 kha_Scheduler.startTime = 0;
 kha_Shaders.painter_colored_fragData0 = "s198:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IGZyYWdtZW50Q29sb3I7Cn0KCg";
 kha_Shaders.painter_colored_fragData1 = "s223:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBGcmFnQ29sb3IgPSBmcmFnbWVudENvbG9yOwp9Cgo";
+kha_Shaders.painter_colored_fragData2 = "s192:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gZnJhZ21lbnRDb2xvcjsKfQoK";
 kha_Shaders.painter_colored_vertData0 = "s331:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgZnJhZ21lbnRDb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
 kha_Shaders.painter_colored_vertData1 = "s311:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWM0IGZyYWdtZW50Q29sb3I7CmluIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgZnJhZ21lbnRDb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
+kha_Shaders.painter_colored_vertData2 = "s374:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIG1lZGl1bXAgdmVjNCB2ZXJ0ZXhDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gcHJvamVjdGlvbk1hdHJpeCAqIHZlYzQodmVydGV4UG9zaXRpb24sIDEuMCk7CiAgICBmcmFnbWVudENvbG9yID0gdmVydGV4Q29sb3I7Cn0KCg";
 kha_Shaders.painter_image_fragData0 = "s471:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWMyIHRleENvb3JkOwp2YXJ5aW5nIGhpZ2hwIHZlYzQgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBoaWdocCB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpICogY29sb3I7CiAgICBoaWdocCB2ZWMzIF8zMiA9IHRleGNvbG9yLnh5eiAqIGNvbG9yLnc7CiAgICB0ZXhjb2xvciA9IHZlYzQoXzMyLngsIF8zMi55LCBfMzIueiwgdGV4Y29sb3Iudyk7CiAgICBnbF9GcmFnRGF0YVswXSA9IHRleGNvbG9yOwp9Cgo";
 kha_Shaders.painter_image_fragData1 = "s487:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKaW4gaGlnaHAgdmVjMiB0ZXhDb29yZDsKaW4gaGlnaHAgdmVjNCBjb2xvcjsKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgaGlnaHAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUodGV4LCB0ZXhDb29yZCkgKiBjb2xvcjsKICAgIGhpZ2hwIHZlYzMgXzMyID0gdGV4Y29sb3IueHl6ICogY29sb3IudzsKICAgIHRleGNvbG9yID0gdmVjNChfMzIueCwgXzMyLnksIF8zMi56LCB0ZXhjb2xvci53KTsKICAgIEZyYWdDb2xvciA9IHRleGNvbG9yOwp9Cgo";
+kha_Shaders.painter_image_fragData2 = "s444:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjMiB0ZXhDb29yZDsKdmFyeWluZyB2ZWM0IGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKSAqIGNvbG9yOwogICAgdmVjMyBfMzIgPSB0ZXhjb2xvci54eXogKiBjb2xvci53OwogICAgdGV4Y29sb3IgPSB2ZWM0KF8zMi54LCBfMzIueSwgXzMyLnosIHRleGNvbG9yLncpOwogICAgZ2xfRnJhZ0RhdGFbMF0gPSB0ZXhjb2xvcjsKfQoK";
 kha_Shaders.painter_image_vertData0 = "s415:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgY29sb3I7CmF0dHJpYnV0ZSB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
 kha_Shaders.painter_image_vertData1 = "s380:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHRleFBvc2l0aW9uOwpvdXQgdmVjNCBjb2xvcjsKaW4gdmVjNCB2ZXJ0ZXhDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gcHJvamVjdGlvbk1hdHJpeCAqIHZlYzQodmVydGV4UG9zaXRpb24sIDEuMCk7CiAgICB0ZXhDb29yZCA9IHRleFBvc2l0aW9uOwogICAgY29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
+kha_Shaders.painter_image_vertData2 = "s479:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdGV4UG9zaXRpb247CnZhcnlpbmcgbWVkaXVtcCB2ZWM0IGNvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
 kha_Shaders.painter_text_fragData0 = "s351:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7CnZhcnlpbmcgaGlnaHAgdmVjMiB0ZXhDb29yZDsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gdmVjNChmcmFnbWVudENvbG9yLnh5eiwgdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpLnggKiBmcmFnbWVudENvbG9yLncpOwp9Cgo";
 kha_Shaders.painter_text_fragData1 = "s367:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7CmluIGhpZ2hwIHZlYzIgdGV4Q29vcmQ7Cgp2b2lkIG1haW4oKQp7CiAgICBGcmFnQ29sb3IgPSB2ZWM0KGZyYWdtZW50Q29sb3IueHl6LCB0ZXh0dXJlKHRleCwgdGV4Q29vcmQpLnggKiBmcmFnbWVudENvbG9yLncpOwp9Cgo";
+kha_Shaders.painter_text_fragData2 = "s340:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjNCBmcmFnbWVudENvbG9yOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IHZlYzQoZnJhZ21lbnRDb2xvci54eXosIHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKS54ICogZnJhZ21lbnRDb2xvci53KTsKfQoK";
 kha_Shaders.painter_text_vertData0 = "s436:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgdGV4Q29vcmQgPSB0ZXhQb3NpdGlvbjsKICAgIGZyYWdtZW50Q29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
 kha_Shaders.painter_text_vertData1 = "s402:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHRleFBvc2l0aW9uOwpvdXQgdmVjNCBmcmFnbWVudENvbG9yOwppbiB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBmcmFnbWVudENvbG9yID0gdmVydGV4Q29sb3I7Cn0KCg";
+kha_Shaders.painter_text_vertData2 = "s500:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdGV4UG9zaXRpb247CnZhcnlpbmcgbWVkaXVtcCB2ZWM0IGZyYWdtZW50Q29sb3I7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgdGV4Q29vcmQgPSB0ZXhQb3NpdGlvbjsKICAgIGZyYWdtZW50Q29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
 kha_Shaders.painter_video_fragData0 = "s471:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWMyIHRleENvb3JkOwp2YXJ5aW5nIGhpZ2hwIHZlYzQgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBoaWdocCB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpICogY29sb3I7CiAgICBoaWdocCB2ZWMzIF8zMiA9IHRleGNvbG9yLnh5eiAqIGNvbG9yLnc7CiAgICB0ZXhjb2xvciA9IHZlYzQoXzMyLngsIF8zMi55LCBfMzIueiwgdGV4Y29sb3Iudyk7CiAgICBnbF9GcmFnRGF0YVswXSA9IHRleGNvbG9yOwp9Cgo";
 kha_Shaders.painter_video_fragData1 = "s487:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKaW4gaGlnaHAgdmVjMiB0ZXhDb29yZDsKaW4gaGlnaHAgdmVjNCBjb2xvcjsKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgaGlnaHAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUodGV4LCB0ZXhDb29yZCkgKiBjb2xvcjsKICAgIGhpZ2hwIHZlYzMgXzMyID0gdGV4Y29sb3IueHl6ICogY29sb3IudzsKICAgIHRleGNvbG9yID0gdmVjNChfMzIueCwgXzMyLnksIF8zMi56LCB0ZXhjb2xvci53KTsKICAgIEZyYWdDb2xvciA9IHRleGNvbG9yOwp9Cgo";
+kha_Shaders.painter_video_fragData2 = "s444:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjMiB0ZXhDb29yZDsKdmFyeWluZyB2ZWM0IGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKSAqIGNvbG9yOwogICAgdmVjMyBfMzIgPSB0ZXhjb2xvci54eXogKiBjb2xvci53OwogICAgdGV4Y29sb3IgPSB2ZWM0KF8zMi54LCBfMzIueSwgXzMyLnosIHRleGNvbG9yLncpOwogICAgZ2xfRnJhZ0RhdGFbMF0gPSB0ZXhjb2xvcjsKfQoK";
 kha_Shaders.painter_video_vertData0 = "s415:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgY29sb3I7CmF0dHJpYnV0ZSB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
 kha_Shaders.painter_video_vertData1 = "s380:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHRleFBvc2l0aW9uOwpvdXQgdmVjNCBjb2xvcjsKaW4gdmVjNCB2ZXJ0ZXhDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gcHJvamVjdGlvbk1hdHJpeCAqIHZlYzQodmVydGV4UG9zaXRpb24sIDEuMCk7CiAgICB0ZXhDb29yZCA9IHRleFBvc2l0aW9uOwogICAgY29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
+kha_Shaders.painter_video_vertData2 = "s479:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdGV4UG9zaXRpb247CnZhcnlpbmcgbWVkaXVtcCB2ZWM0IGNvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
 kha_System.renderListeners = [];
 kha_System.foregroundListeners = [];
 kha_System.resumeListeners = [];
@@ -24106,5 +24068,3 @@ kha_netsync_SyncBuilder.nextId = 0;
 kha_netsync_SyncBuilder.objects = [];
 Main.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
-
-//# sourceMappingURL=kha.js.map
