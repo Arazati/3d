@@ -6413,7 +6413,7 @@ kha_Window.prototype = {
 		}
 	}
 	,set_width: function(value) {
-		return 800;
+		return 1280;
 	}
 	,get_height: function() {
 		if(this.canvas.clientHeight == 0) {
@@ -6423,7 +6423,7 @@ kha_Window.prototype = {
 		}
 	}
 	,set_height: function(value) {
-		return 600;
+		return 960;
 	}
 	,get_mode: function() {
 		if(this.isFullscreen()) {
@@ -6508,10 +6508,10 @@ var kha_WindowOptions = function(title,x,y,width,height,display,visible,windowFe
 		display = -1;
 	}
 	if(height == null) {
-		height = 600;
+		height = 960;
 	}
 	if(width == null) {
-		width = 800;
+		width = 1280;
 	}
 	if(y == null) {
 		y = -1;
@@ -6523,8 +6523,8 @@ var kha_WindowOptions = function(title,x,y,width,height,display,visible,windowFe
 	this.windowFeatures = 1 | 4 | 2;
 	this.visible = true;
 	this.display = -1;
-	this.height = 600;
-	this.width = 800;
+	this.height = 960;
+	this.width = 1280;
 	this.y = -1;
 	this.x = -1;
 	this.title = null;
