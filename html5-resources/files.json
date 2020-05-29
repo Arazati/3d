@@ -1,84 +1,48 @@
 {
 	"files": [
 		{
-			"name": "Apache_License_txt",
+			"name": "Artisans_Hub_mtl",
 			"files": [
-				"Apache License.txt"
+				"Artisans Hub.mtl"
 			],
 			"file_sizes": [
-				11323
+				218
 			],
 			"type": "blob"
 		},
 		{
-			"name": "OpenSans_Bold",
+			"name": "Artisans_Hub_obj",
 			"files": [
-				"OpenSans-Bold.ttf"
+				"Artisans Hub.obj"
 			],
 			"file_sizes": [
-				224592
+				336677
 			],
-			"type": "font"
+			"type": "blob"
 		},
 		{
-			"name": "OpenSans_BoldItalic",
+			"name": "High",
 			"files": [
-				"OpenSans-BoldItalic.ttf"
+				"High.png"
 			],
 			"file_sizes": [
-				213292
+				252956
 			],
-			"type": "font"
+			"type": "image",
+			"original_width": 1024,
+			"original_height": 512
 		},
 		{
-			"name": "OpenSans_ExtraBold",
+			"name": "Low",
 			"files": [
-				"OpenSans-ExtraBold.ttf"
+				"Low.png"
 			],
 			"file_sizes": [
-				222584
+				67188
 			],
-			"type": "font"
-		},
-		{
-			"name": "OpenSans_ExtraBoldItalic",
-			"files": [
-				"OpenSans-ExtraBoldItalic.ttf"
-			],
-			"file_sizes": [
-				213420
-			],
-			"type": "font"
-		},
-		{
-			"name": "OpenSans_Italic",
-			"files": [
-				"OpenSans-Italic.ttf"
-			],
-			"file_sizes": [
-				212896
-			],
-			"type": "font"
-		},
-		{
-			"name": "OpenSans_Light",
-			"files": [
-				"OpenSans-Light.ttf"
-			],
-			"file_sizes": [
-				222412
-			],
-			"type": "font"
-		},
-		{
-			"name": "OpenSans_LightItalic",
-			"files": [
-				"OpenSans-LightItalic.ttf"
-			],
-			"file_sizes": [
-				213128
-			],
-			"type": "font"
+			"type": "image",
+			"original_width": 512,
+			"original_height": 256
 		},
 		{
 			"name": "OpenSans_Regular",
@@ -91,36 +55,154 @@
 			"type": "font"
 		},
 		{
-			"name": "OpenSans_Semibold",
+			"name": "T1",
 			"files": [
-				"OpenSans-Semibold.ttf"
+				"T1.png"
 			],
 			"file_sizes": [
-				221328
-			],
-			"type": "font"
-		},
-		{
-			"name": "OpenSans_SemiboldItalic",
-			"files": [
-				"OpenSans-SemiboldItalic.ttf"
-			],
-			"file_sizes": [
-				212820
-			],
-			"type": "font"
-		},
-		{
-			"name": "goat2",
-			"files": [
-				"goat2.png"
-			],
-			"file_sizes": [
-				4420
+				99
 			],
 			"type": "image",
-			"original_width": 436,
-			"original_height": 404
+			"original_width": 16,
+			"original_height": 16
+		},
+		{
+			"name": "T10",
+			"files": [
+				"T10.png"
+			],
+			"file_sizes": [
+				225
+			],
+			"type": "image",
+			"original_width": 16,
+			"original_height": 16
+		},
+		{
+			"name": "T2",
+			"files": [
+				"T2.png"
+			],
+			"file_sizes": [
+				7633
+			],
+			"type": "image",
+			"original_width": 64,
+			"original_height": 128
+		},
+		{
+			"name": "T3",
+			"files": [
+				"T3.png"
+			],
+			"file_sizes": [
+				7750
+			],
+			"type": "image",
+			"original_width": 64,
+			"original_height": 128
+		},
+		{
+			"name": "T4",
+			"files": [
+				"T4.png"
+			],
+			"file_sizes": [
+				2601
+			],
+			"type": "image",
+			"original_width": 64,
+			"original_height": 64
+		},
+		{
+			"name": "T5",
+			"files": [
+				"T5.jpg"
+			],
+			"file_sizes": [
+				11199
+			],
+			"type": "image",
+			"original_width": 128,
+			"original_height": 640
+		},
+		{
+			"name": "T6",
+			"files": [
+				"T6.png"
+			],
+			"file_sizes": [
+				461
+			],
+			"type": "image",
+			"original_width": 32,
+			"original_height": 32
+		},
+		{
+			"name": "T7",
+			"files": [
+				"T7.png"
+			],
+			"file_sizes": [
+				1254
+			],
+			"type": "image",
+			"original_width": 64,
+			"original_height": 32
+		},
+		{
+			"name": "T8",
+			"files": [
+				"T8.png"
+			],
+			"file_sizes": [
+				837
+			],
+			"type": "image",
+			"original_width": 32,
+			"original_height": 32
+		},
+		{
+			"name": "T9",
+			"files": [
+				"T9.png"
+			],
+			"file_sizes": [
+				345
+			],
+			"type": "image",
+			"original_width": 16,
+			"original_height": 16
+		},
+		{
+			"name": "VideoShip_obj",
+			"files": [
+				"VideoShip.obj"
+			],
+			"file_sizes": [
+				2855
+			],
+			"type": "blob"
+		},
+		{
+			"name": "axis_obj",
+			"files": [
+				"axis.obj"
+			],
+			"file_sizes": [
+				3973
+			],
+			"type": "blob"
+		},
+		{
+			"name": "mountains_obj",
+			"files": [
+				"mountains.obj"
+			],
+			"file_sizes": [
+				154766
+			],
+			"type": "blob"
 		},
 		{
 			"name": "painter_colored_frag",
@@ -538,16 +620,44 @@
 			]
 		},
 		{
-			"name": "tone",
+			"name": "readme_txt",
 			"files": [
-				"tone.ogg",
-				"tone.mp3"
+				"readme.txt"
 			],
 			"file_sizes": [
-				45975,
-				144612
+				84
 			],
-			"type": "sound"
+			"type": "blob"
+		},
+		{
+			"name": "sourceWebsite",
+			"files": [
+				"sourceWebsite"
+			],
+			"file_sizes": [
+				265
+			],
+			"type": "blob"
+		},
+		{
+			"name": "teapot_obj",
+			"files": [
+				"teapot.obj"
+			],
+			"file_sizes": [
+				210614
+			],
+			"type": "blob"
+		},
+		{
+			"name": "torchic_obj",
+			"files": [
+				"torchic.obj"
+			],
+			"file_sizes": [
+				79741
+			],
+			"type": "blob"
 		}
 	]
 }
