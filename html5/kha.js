@@ -355,12 +355,6 @@ Main.prototype = {
 		this.setCameraSettings(0.1,1000,90);
 		Main.pixelScale = 2;
 		this.updateBounds();
-		var _g = 0;
-		var _g1 = this.depth.length;
-		while(_g < _g1) {
-			var i = _g++;
-			this.depth[i] = 0;
-		}
 	}
 	,createCubeMesh: function() {
 		var meshCube = new Mesh();
@@ -496,7 +490,6 @@ Main.prototype = {
 				vecTrianglesToRaster.push(triProjected);
 			}
 		}
-		this.useDepthBuffer = false;
 		if(!this.useDepthBuffer || this.highResMode) {
 			vecTrianglesToRaster.sort(function(t1,t2) {
 				var z1 = (t1.p[0].z + t1.p[1].z + t1.p[2].z) / 3.0;
@@ -654,7 +647,7 @@ Main.prototype = {
 		var y2 = Math.round(triangle.p[1].y);
 		var x3 = Math.round(triangle.p[2].x);
 		var y3 = Math.round(triangle.p[2].y);
-		var oneOver = 1 / triangle.p[0].w;
+		var oneOver = 1 / (triangle.p[0].w + triangle.p[1].w + triangle.p[2].w) / 3;
 		if(y2 < y1) {
 			var c = x1;
 			x1 = x2;
@@ -746,37 +739,6 @@ Main.prototype = {
 			}
 		}
 	}
-	,calcStepValues: function(dx1,dy1,dax_step,dx2,dy2,dbx_step) {
-		if(dy1 != 0) {
-			dax_step = dx1 / Math.abs(dy1);
-		}
-		if(dy2 != 0) {
-			dbx_step = dx2 / Math.abs(dy2);
-		}
-	}
-	,calcStep: function(yLoop1,yLoop2,x1,y1,x2,y2,dax_step,dbx_step) {
-		var _g = yLoop1;
-		var _g1 = yLoop2;
-		while(_g < _g1) {
-			var i = _g++;
-			var ax = x1 + ((i - y1) * dax_step | 0);
-			var bx = x2 + ((i - y2) * dbx_step | 0);
-			if(ax > bx) {
-				var c = ax;
-				ax = bx;
-				bx = c;
-			}
-			var tstep = 1.0 / (bx - ax);
-			var t = 0.0;
-			var _g2 = ax;
-			var _g11 = bx;
-			while(_g2 < _g11) {
-				var j = _g2++;
-				this.drawPixel(j,i);
-				t += tstep;
-			}
-		}
-	}
 	,font: null
 	,mouseXFullRes: null
 	,mouseX: null
@@ -801,14 +763,25 @@ Main.prototype = {
 		this.g3 = graphics3d;
 		graphics2d.begin();
 		graphics2d.set_color(-1);
-		if(this.texture == null || this.texture.get_realWidth() != Main.trueWidth || this.texture.get_realHeight() != Main.trueHeight) {
-			this.texture = kha_Image.create(Main.trueWidth,Main.trueHeight,0,2);
+		if(!this.highResMode && this.texture == null || this.texture.get_realWidth() != Main.trueWidth || this.texture.get_realHeight() != Main.trueHeight) {
+			this.texture = kha_Image.create(Main.trueWidth,Main.trueHeight,0,1);
+			this.colorBuffer = new ImageData(Main.trueWidth,Main.trueHeight);
+			this.texture.lock();
+			this.texture.unlock();
 		}
-		this.colorBuffer = this.texture.lock();
+		if(!this.highResMode) {
+			this.colorBuffer.data.fill(0,0,this.colorBuffer.data.length);
+		}
 		this.draw();
-		this.texture.unlock();
 		this.g2.set_color(-1);
-		this.g2.drawScaledSubImage(this.texture,0,0,Main.baseWidth,Main.baseHeight,0,0,Main.trueWidth,Main.trueHeight);
+		if(!this.highResMode) {
+			var dynTex = this.texture;
+			var tex = dynTex.texture;
+			kha_SystemImpl.gl.bindTexture(3553,tex);
+			kha_SystemImpl.gl.texSubImage2D(3553,0,0,0,6408,5121,this.colorBuffer);
+			kha_SystemImpl.gl.bindTexture(3553,null);
+			this.g2.drawScaledSubImage(this.texture,0,0,Main.baseWidth,Main.baseHeight,0,0,Main.trueWidth,Main.trueHeight);
+		}
 		if(this.showFPS) {
 			var fps = Math.round(1 / timeSinceLastFrame);
 			this.drawString(fps == null ? "null" : "" + fps,Main.trueWidth - 15,5,40,-16711936,-16777216,2,0);
@@ -863,7 +836,11 @@ Main.prototype = {
 			color = kha__$Color_Color_$Impl_$._new(this.g2.get_color());
 		}
 		if(x > 0 && x < Main.baseWidth && y > 0 && y < Main.baseHeight) {
-			this.colorBuffer.setInt32(y * Main.trueWidth * 4 + x * 4,kha__$Color_Color_$Impl_$.fromBytes(color & 255,(color & 65280) >>> 8,(color & 16711680) >>> 16,color >>> 24));
+			var i = y * Main.trueWidth * 4 + x * 4;
+			this.colorBuffer.data[i] = (color & 16711680) >>> 16;
+			this.colorBuffer.data[i + 1] = (color & 65280) >>> 8;
+			this.colorBuffer.data[i + 2] = color & 255;
+			this.colorBuffer.data[i + 3] = color >>> 24;
 		}
 	}
 	,texture: null
@@ -2566,7 +2543,7 @@ kha__$Assets_SoundList.prototype = {
 	,__class__: kha__$Assets_SoundList
 };
 var kha__$Assets_BlobList = function() {
-	this.names = ["Artisans_Hub_mtl","Artisans_Hub_obj","VideoShip_obj","axis_obj","mountains_obj","readme_txt","sourceWebsite","teapot_obj","torchic_obj"];
+	this.names = ["Artisans_Hub_mtl","Artisans_Hub_obj","VideoShip_obj","axis_obj","mountains_obj","sourceWebsite","teapot_obj","torchic_obj"];
 	this.torchic_objDescription = { name : "torchic_obj", file_sizes : [79741], files : ["torchic.obj"], type : "blob"};
 	this.torchic_objName = "torchic_obj";
 	this.torchic_obj = null;
@@ -2576,9 +2553,6 @@ var kha__$Assets_BlobList = function() {
 	this.sourceWebsiteDescription = { name : "sourceWebsite", file_sizes : [265], files : ["sourceWebsite"], type : "blob"};
 	this.sourceWebsiteName = "sourceWebsite";
 	this.sourceWebsite = null;
-	this.readme_txtDescription = { name : "readme_txt", file_sizes : [84], files : ["readme.txt"], type : "blob"};
-	this.readme_txtName = "readme_txt";
-	this.readme_txt = null;
 	this.mountains_objDescription = { name : "mountains_obj", file_sizes : [154766], files : ["mountains.obj"], type : "blob"};
 	this.mountains_objName = "mountains_obj";
 	this.mountains_obj = null;
@@ -2660,18 +2634,6 @@ kha__$Assets_BlobList.prototype = {
 	,mountains_objUnload: function() {
 		this.mountains_obj.unload();
 		this.mountains_obj = null;
-	}
-	,readme_txt: null
-	,readme_txtName: null
-	,readme_txtDescription: null
-	,readme_txtLoad: function(done,failure) {
-		kha_Assets.loadBlob("readme_txt",function(blob) {
-			done();
-		},failure,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 134, className : "kha._Assets.BlobList", methodName : "readme_txtLoad"});
-	}
-	,readme_txtUnload: function() {
-		this.readme_txt.unload();
-		this.readme_txt = null;
 	}
 	,sourceWebsite: null
 	,sourceWebsiteName: null

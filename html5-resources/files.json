@@ -620,16 +620,6 @@
 			]
 		},
 		{
-			"name": "readme_txt",
-			"files": [
-				"readme.txt"
-			],
-			"file_sizes": [
-				84
-			],
-			"type": "blob"
-		},
-		{
 			"name": "sourceWebsite",
 			"files": [
 				"sourceWebsite"
