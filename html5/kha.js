@@ -787,7 +787,7 @@ Main.prototype = {
 			this.drawString(fps == null ? "null" : "" + fps,Main.trueWidth - 15,5,40,-16711936,-16777216,2,0);
 		}
 		var s = this.debugText.length > 0 ? this.debugText + "\n" : "";
-		s += "Speed: " + Std.string(this.speed) + " (W/S - Space to pause)\n";
+		s += "Speed: " + Std.string(this.speed * 1000 | 0) + " (W/S - Space to pause) - v(" + "0.0.1" + ")\n";
 		s += this.highResMode ? "-High Res (L)\n" : "-Low Res (L)\n";
 		s += this.insideOutMode ? "-Inside Out (M)\n" : "-Right Side Out (M)\n";
 		s += this.wireframeEnabled ? "-Wireframe Enabled (N)\n" : "-Wireframe Disabled (N)\n";
@@ -23968,6 +23968,7 @@ if(ArrayBuffer.prototype.slice == null) {
 	ArrayBuffer.prototype.slice = js_lib__$ArrayBuffer_ArrayBufferCompat.sliceImpl;
 }
 Main.baseTitle = " ";
+Main.version = "0.0.1";
 Main.pixelScale = 1;
 Main.baseWidth = 1280;
 Main.trueWidth = 1280;
